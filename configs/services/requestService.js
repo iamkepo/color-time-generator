@@ -1,16 +1,17 @@
 import { ObjectId } from 'mongodb';
-import { getTab } from './dbService.js';
+import { dbCollection } from './dbService.js';
 
 /**
  * Classe représentant un contrôleur de base de données pour une collection MongoDB spécifique.
  */
 class RequestService {
+  collection;
   /**
    * Constructeur de la classe.
    * @param {string} collectionName - Le nom de la collection MongoDB à manipuler.
    */
   constructor(collectionName) {
-    this.collection = getTab[collectionName];
+    this.collection = dbCollection(collectionName);
   }
 
   
@@ -43,8 +44,20 @@ class RequestService {
    * @param {Object} data - Les données à mettre à jour.
    * @returns {boolean} - Indique si la mise à jour a réussi.
    */
-  async update(id, data) {
-    const result = await this.collection.updateOne({ _id: ObjectId(id) }, { $set: data });
+  async updateOne(id, data) {
+    const result = await this.collection.updateOne({ _id: new ObjectId(id) }, { $set: data });
+    return result.modifiedCount > 0;
+  }
+
+  /**
+   * Met à jour un document existant dans la collection.
+   * @param {object} filter - L'ID du document à mettre à jour.
+   * @param {Object} data - Les données à mettre à jour.
+   * @returns {boolean} - Indique si la mise à jour a réussi.
+   */
+
+  async update(filter, data) {
+    const result = await this.collection.updateOne(filter, { $set: data });
     return result.modifiedCount > 0;
   }
 
@@ -69,7 +82,7 @@ class RequestService {
    * @returns {boolean} - Indique si la suppression a réussi.
    */
   async delete(id) {
-    const result = await this.collection.deleteOne({ _id: ObjectId(id) });
+    const result = await this.collection.deleteOne({ _id: new ObjectId(id) });
     return result.deletedCount > 0;
   }
 
@@ -87,13 +100,23 @@ class RequestService {
   }
 
   /**
+   * Recherche un document avec un filtre donné.
+   * @param {Object} filter - Le filtre pour la recherche.
+   * @param {Object} projection - La projection pour inclure ou exclure des champs spécifiques.
+   * @returns {Object} - Le premier document correspondant au filtre.
+   */
+  async get(filter, projection = {}) {
+    const result = await this.collection.findOne(filter, { projection });
+    return result;
+  }
+  /**
    * Récupère un document de la collection en fonction de son ID.
    * @param {string} id - L'ID du document à récupérer.
    * @param {Object} projection - La projection pour inclure ou exclure des champs spécifiques.
    * @returns {Object} - Le document récupéré.
    */
-  async get(id, projection = {}) {
-    const result = await this.collection.findOne({ _id: ObjectId(id) }, { projection });
+  async getOne(id, projection = {}) {
+    const result = await this.collection.findOne({ _id: new ObjectId(id) }, { projection });
     return result;
   }
 
@@ -157,27 +180,30 @@ class RequestService {
 
   /**
    * Recherche un document et le met à jour atomiquement.
+   * @param {string} id - Le filtre pour la recherche.
+   * @param {Object} update - Les modifications à apporter au document trouvé.
+   * @param {Object} options - Les options de recherche et de mise à jour.
+   * @param {Object} projection - La projection pour inclure ou exclure des champs spécifiques.
+   * @returns {Object} - Le document avant la mise à jour.
+   */
+  async findOneAndUpdate(id, update = {}, options = {}, projection = {}) {
+    const result = await this.collection.findOneAndUpdate({ _id: new ObjectId(id)}, update, { ...options, projection });
+    return result;
+  }
+  
+  /**
+   * Recherche un document et le met à jour atomiquement.
    * @param {Object} filter - Le filtre pour la recherche.
    * @param {Object} update - Les modifications à apporter au document trouvé.
    * @param {Object} options - Les options de recherche et de mise à jour.
    * @param {Object} projection - La projection pour inclure ou exclure des champs spécifiques.
    * @returns {Object} - Le document avant la mise à jour.
    */
-  async findAndUpdate(filter, update, options = {}, projection = {}) {
+  async findAndUpdate(filter, update = {}, options = {}, projection = {}) {
     const result = await this.collection.findOneAndUpdate(filter, update, { ...options, projection });
-    return result.value;
-  }
-
-  /**
-   * Recherche un document avec un filtre donné.
-   * @param {Object} filter - Le filtre pour la recherche.
-   * @param {Object} projection - La projection pour inclure ou exclure des champs spécifiques.
-   * @returns {Object} - Le premier document correspondant au filtre.
-   */
-  async getOne(filter, projection = {}) {
-    const result = await this.collection.findOne(filter, { projection });
     return result;
   }
+
 
   /**
    * Récupère des valeurs distinctes pour un champ donné avec un filtre donné.

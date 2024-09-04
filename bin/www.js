@@ -10,12 +10,13 @@ const debugServer = debug('time-color-generator:server');
 
 import { createServer } from 'http';
 import socketService from '../configs/services/socketService.js';
+import { envConst } from '../helpers/constants.js';
 
 /**
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '3000');
+var port = normalizePort(envConst.PORT || '3000');
 app.set('port', port);
 
 /**
@@ -28,8 +29,9 @@ socketService(server);
 /**
  * Listen on provided port, on all network interfaces.
  */
-
-server.listen(port);
+server.listen(port, () => {
+  console.log(`⚡️[server]: Server is running at http://localhost:${port}`);
+});
 server.on('error', onError);
 server.on('listening', onListening);
 

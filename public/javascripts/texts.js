@@ -2,7 +2,7 @@ export const bodyTexts = {
   en: {
     TITLE: 'Color Time',
     DESCRIPTION: 'Welcome to Color Time Generator',
-    START: 'Get starting',
+    START: 'Get started',
     LABEL: 'Date update',
     SEARCH: 'Search'
   },
