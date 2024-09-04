@@ -1,8 +1,11 @@
 import colorSchema from '../configs/schemas/colorSchema.js';
 import RequestService from '../configs/services/requestService.js';
 
-export const colorsService = new RequestService('colors');
-class ColorsModel {
+class ColorsModel extends RequestService {
+  constructor() {
+    super('colors');
+  }
+
   /**
    * Ajoute un nouveau document à la collection.
    * @param {Object} data - Les données à ajouter à la collection.
@@ -11,6 +14,7 @@ class ColorsModel {
     const validationResult = colorSchema.validate(data)
     return validationResult;
   }
+
   generateColorFromHours(hours) {
     // Limiter les heures au nombre total de couleurs possibles
     const limitedHours = hours % 16777216; // 16 777 216 = 256 * 256 * 256
@@ -51,7 +55,7 @@ class ColorsModel {
   }
 
   async getColorsCount() {
-    const count = await colorsService.getCount({});
+    const count = await this.getCount({});
     return count;
   }
 }

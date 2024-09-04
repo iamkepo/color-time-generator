@@ -1,3 +1,10 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
+export const envConst = {
+  ...process.env,
+};
+
 const now = Date.now();
 
 export const saltRounds = 10; // Number of salt rounds for bcrypt hashing

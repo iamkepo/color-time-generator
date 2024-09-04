@@ -8,7 +8,9 @@ function socketService(server) {
       methods: ["GET", "POST", "PUT", "PATCH"]
     },
     maxHttpBufferSize: 1e8 // 100 MB
-  });
+  });  
+  console.log(`⚡️[socket]: Socket is running`);
+
 
   let date = null;
   let timer = null;

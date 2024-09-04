@@ -1,8 +1,7 @@
 import express from 'express';
-import ColorsController from '../../controllers/colorsController.js';
+import { colorsController } from '../../controllers/colorsController.js';
 
 const router = express.Router();
-const colorsController = new ColorsController();
 
 /**
  * @swagger
