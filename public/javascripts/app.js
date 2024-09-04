@@ -1,4 +1,5 @@
-import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
+// import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
+import { io } from "./socket.io.esm.min.js";
 import { bodyTexts } from "./texts.js";
 
 document.addEventListener('alpine:init', () => {
@@ -28,7 +29,6 @@ document.addEventListener('alpine:init', () => {
       }
       localStorage.setItem('theme', this.theme);
     },
-
     toggleLang() {
       if (this.lang == 'en'){
         this.lang = 'fr'
@@ -69,11 +69,11 @@ document.addEventListener('alpine:init', () => {
     destroy() {
       clearInterval(this.timer);
     },
-    tint(counter) {
-      if (counter <= 99) {
+    tint(progress) {
+      if (progress <= 99) {
         return 'primary';
       }
-      if (counter == 100) {
+      if (progress == 100) {
         return 'success';
       }
     },

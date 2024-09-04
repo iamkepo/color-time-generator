@@ -10,7 +10,7 @@ const __dirname = dirname(__filename);
 import { join } from 'path';
 
 import route from './routes/index.js';
-import { connect } from './configs/services/dbService.js';
+import { dbConnect } from './configs/services/dbService.js';
 
 var app = express();
 app.use(cors())
@@ -20,7 +20,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(join(__dirname, 'public')));
 
-connect()
+dbConnect()
 
 route(app);
 
