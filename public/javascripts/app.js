@@ -2,9 +2,9 @@ import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
 // import { io } from "./socket.io.esm.min.js";
 import { bodyTexts } from "./texts.js";
 
+document.addEventListener('alpine:init', () => {
 const socket = io(window.location.origin);
 
-document.addEventListener('alpine:init', () => {
   Alpine.store('setting', {
     theme: localStorage.getItem('theme') || 'dark',
     lang: localStorage.getItem('lang') || 'en',
