@@ -4,7 +4,7 @@ import { bodyTexts } from "./texts.js";
 
 
 document.addEventListener('alpine:init', () => {
-  const socket = io();
+  const socket = io(window.location.origin);
   Alpine.store('setting', {
     theme: localStorage.getItem('theme') || 'dark',
     lang: localStorage.getItem('lang') || 'en',
