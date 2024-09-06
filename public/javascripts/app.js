@@ -3,7 +3,7 @@ import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
 import { bodyTexts } from "./texts.js";
 
 document.addEventListener('alpine:init', () => {
-const socket = io(window.location.origin);
+  const socket = io();
 
   Alpine.store('setting', {
     theme: localStorage.getItem('theme') || 'dark',
