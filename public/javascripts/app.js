@@ -2,10 +2,8 @@ import { io } from "https://cdn.socket.io/4.7.5/socket.io.esm.min.js";
 // import { io } from "./socket.io.esm.min.js";
 import { bodyTexts } from "./texts.js";
 
-const baseURL = "https://color-time-generator.vercel.app";
-
 document.addEventListener('alpine:init', () => {
-  const socket = io(baseURL);
+  const socket = io();
 
   Alpine.store('setting', {
     theme: localStorage.getItem('theme') || 'dark',
